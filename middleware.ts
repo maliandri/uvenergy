@@ -1,36 +1,3 @@
-import { NextResponse, type NextRequest } from 'next/server'
-import { createServerClient } from '@supabase/ssr'
-
-export async function middleware(req: NextRequest) {
-  const res = NextResponse.next()
-
-  if (req.nextUrl.pathname.startsWith('/admin') && !req.nextUrl.pathname.startsWith('/admin/login')) {
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() {
-            return req.cookies.getAll()
-          },
-          setAll(cookiesToSet) {
-            cookiesToSet.forEach(({ name, value, options }) =>
-              res.cookies.set(name, value, options)
-            )
-          },
-        },
-      }
-    )
-
-    const { data: { session } } = await supabase.auth.getSession()
-    if (!session) {
-      return NextResponse.redirect(new URL('/admin/login', req.url))
-    }
-  }
-
-  return res
-}
-
-export const config = {
-  matcher: ['/admin/:path*'],
-}
+// Auth middleware temporariamente desactivado — activar cuando Supabase esté configurado
+// Ver: https://nextjs.org/docs/messages/middleware-to-proxy
+export {}

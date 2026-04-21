@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { createServiceClient } from '@/lib/supabase/server'
 import { formatCurrency } from '@/lib/utils'
 import { Calendar, Users, Clock, DollarSign } from 'lucide-react'
