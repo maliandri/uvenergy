@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { Navbar } from '@/components/landing/Navbar'
 import { Footer } from '@/components/landing/Footer'
 import { AgendarWizard } from '@/components/landing/AgendarWizard'
@@ -29,7 +30,15 @@ export default function AgendarPage() {
               Elegí el servicio, la fecha y completá tus datos.
             </p>
           </div>
-          <AgendarWizard />
+          <Suspense
+            fallback={
+              <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center text-[#5A6A8A]">
+                Cargando formulario...
+              </div>
+            }
+          >
+            <AgendarWizard />
+          </Suspense>
         </div>
       </main>
       <Footer />
