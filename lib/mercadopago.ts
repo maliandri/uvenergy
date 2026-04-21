@@ -1,12 +1,14 @@
 import { MercadoPagoConfig, Preference, Payment } from 'mercadopago'
 import type { Cita, Servicio, Cliente } from './supabase/types'
 
-export const mpClient = new MercadoPagoConfig({
-  accessToken: process.env.MP_ACCESS_TOKEN!,
-})
+function getMpClient() {
+  return new MercadoPagoConfig({
+    accessToken: process.env.MP_ACCESS_TOKEN || 'placeholder',
+  })
+}
 
 export async function createPreference(cita: Cita, servicio: Servicio, cliente: Cliente) {
-  const preference = new Preference(mpClient)
+  const preference = new Preference(getMpClient())
   const senia = Number(servicio.precio_base) * 0.3
 
   return await preference.create({
@@ -37,6 +39,6 @@ export async function createPreference(cita: Cita, servicio: Servicio, cliente: 
 }
 
 export async function getPayment(paymentId: string) {
-  const payment = new Payment(mpClient)
+  const payment = new Payment(getMpClient())
   return await payment.get({ id: paymentId })
 }

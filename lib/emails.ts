@@ -1,14 +1,16 @@
 import { Resend } from 'resend'
 import { formatDate, formatTime, formatCurrency } from './utils'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY || 'placeholder')
+}
 const FROM = process.env.EMAIL_FROM || 'no-reply@uvenergy.com.ar'
 const BASE_URL = process.env.NEXT_PUBLIC_URL || 'https://uvenergy.com.ar'
 
 export async function sendVerificationEmail(email: string, nombre: string, token: string) {
   const verifyUrl = `${BASE_URL}/api/auth/verify-client?token=${token}`
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM,
     to: email,
     subject: 'Verificá tu email — UV Energy',
@@ -57,7 +59,7 @@ export async function sendCitaCreada(
   fecha: string,
   hora: string
 ) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM,
     to: email,
     subject: `Tu consulta está en camino — UV Energy`,
@@ -102,7 +104,7 @@ export async function sendCitaConfirmada(
   fecha: string,
   hora: string
 ) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM,
     to: email,
     subject: `✅ Turno confirmado — UV Energy`,
@@ -149,7 +151,7 @@ export async function sendRecordatorio(
   fecha: string,
   hora: string
 ) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM,
     to: email,
     subject: `⏰ Recordatorio: tu turno es mañana — UV Energy`,
@@ -193,7 +195,7 @@ export async function sendPagoAprobado(
   monto: number,
   citaId: string
 ) {
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM,
     to: email,
     subject: `💳 Pago aprobado — UV Energy`,
